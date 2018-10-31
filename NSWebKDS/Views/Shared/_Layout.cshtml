@@ -1,0 +1,196 @@
+﻿@using NSWebKDS.Shared
+
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script>
+    @{
+        string controller = this.ViewContext.RouteData.Values["controller"].ToString();
+        string baseUrl = new Uri(Request.Url, Url.Content("~")).ToString();
+    }
+    ControllerName = "@controller";
+        BaseUrl = "@baseUrl";
+        var _RedirectToActionMana = '@Url.Action("Index", "OrderManagement")';
+        var _HostApiActive = '@Url.Action("Active", "Home")';
+        var _HostApiGetSettings = '@Url.Action("GetSettings","Home")';
+        var _HostApiGetFilter = '@Url.Action("GetFilter", "OrderManagement")';
+        var _HostApiGetListFilter = '@Url.Action("GetListFilter", "OrderManagement")';
+
+    var _Sound = BaseUrl + "@Commons._soundPrepareScreen";
+    var _PendingTime = "@Commons._pendingTime";
+    var _HostApiUrl = "@Commons.HostApiUrl";
+    var _StoreId = "@Commons._StoreId";
+    var _AppKey = "@Commons.AppKey";
+        var _AppSecret = "@Commons.AppSecret";
+        var socketUrl = "@Commons.SocketUrl";
+        var _columnGird = "@Commons._numOfCellOrderMana";
+    </script>
+</head>
+<body>
+    <div id="loader"></div>
+    <div>
+        @Scripts.Render("~/sk")
+        @Scripts.Render("~/ng")
+        @Scripts.Render("~/app")
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+
+        @Html.Partial("_Nav")
+        <div class="parent">
+
+            @Html.Partial("_Filter")
+            @RenderBody()
+
+            <div ng-controller="homeCtrl">
+                <div class="modal fade" id="activateModalStep1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Activate</h5>
+                            </div>
+                            <div class="modal-body">
+                                <div class="step1" ng-show="IsStep1">
+                                    <form name="myFormStep1" id="myFormStep1">
+                                        <div class="form-group">
+                                            <div class="col-md-12 col-sm-12 col-xl-12">
+                                                <input class="form-control" ng-model="URL" name="URL" placeholder="URL" style="border-radius:0rem !important;" required />
+                                                <span style="color:red" ng-show="myFormStep1.URL.$dirty && myFormStep1.URL.$invalid">
+                                                    <label ng-show="myFormStep1.URL.$error.required">URL is required.</label>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-12 col-sm-12 col-xl-12">
+                                                <input type="email" class="form-control" ng-model="Email" name="Email" id="txtEmail" placeholder="Email" autocomplete="off" required style="border-radius:0rem !important;" />
+                                                <span style="color:red" ng-show="myFormStep1.Email.$dirty && myFormStep1.Email.$invalid">
+                                                    <label ng-show="myFormStep1.Email.$error.required">Email is required.</label>
+                                                    <label ng-show="myFormStep1.Email.$error.email">E-mail is not valid.</label>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-12 col-sm-12 col-xl-12">
+                                                <input type="hidden" ng-model="AppSecret" />
+                                                <input type="hidden" ng-model="AppKey" />
+                                                <input class="form-control" type="password" name="Password" ng-model="Password" placeholder="Password" autocomplete="off" required style="border-radius:0rem !important;" />
+                                                <span style="color:red" ng-show="myFormStep1.Password.$dirty && myFormStep1.Password.$invalid">
+                                                    <label ng-show="myFormStep1.Password.$error.required">Password is required.</label>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-show="IsShowStep1">
+                                            <div class="col-md-12 col-sm-12 col-xl-12">
+                                                <span style="color:red">
+                                                    <label>{{MessageStep1}}.</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div class="step2" ng-show="IsStep2">
+                                    <form name="myFormStep2">
+                                        <div class="form-group">
+                                            <div class="col-md-12 col-sm-12 col-xl-12">
+                                                <input class="form-control" ng-model="ApproveCode" name="ApproveCode" placeholder="License Key" autocomplete="off" required style="font-family:SF Text Semibold;font-size:24pt; color:#B3B3B3;border-radius:0rem !important;" />
+                                                <span style="color:red" ng-show="myFormStep2.ApproveCode.$dirty && myFormStep2.ApproveCode.$invalid">
+                                                    <label ng-show="myFormStep2.ApproveCode.$error.required">License Key is required.</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-12 col-sm-12 col-xs-12 lineHeight" style="font-family: SF Text Semibold;font-size: 24pt;color: #B3B3B3 !important;margin-bottom:-10px;">Change Location</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12 col-sm-12 col-xl-12">
+
+                                                <select class="form-control" ng-model="Id" id="myLocation" name="Id" style="width:100% !important;height:100px !important;" required>
+                                                    <option></option>
+                                                    <optgroup ng-repeat="item in ListStore" label="{{item.CompanyName}}">
+                                                        <option ng-repeat="itemChild in item.ChildStore" value="{{itemChild.Id}}">
+                                                            {{itemChild.Name}}
+                                                        </option>
+                                                    </optgroup>
+
+                                                </select>
+                                                <span style="color:red" ng-show="IsShowStore">
+                                                    <label ng-show="IsShowStore">Store is required.</label>
+                                                </span>
+                                                @*<span style="color:red" ng-show="myFormStep2.Id.$dirty && myFormStep2.Id.$invalid">
+                                                    <label ng-show="myFormStep2.Id.$error.required">Store is required.</label>
+                                                </span>*@
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-show="IsShowStep2">
+                                            <div class="col-md-12 col-sm-12 col-xl-12">
+                                                <span style="color:red">
+                                                    <label>{{MessageStep2}}.</label>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-weight:bold;width:100px;">CANCEL</button>
+                                <button type="button" style="background-color:#9733ee;font-weight:bold;border:none;width:100px;" class="btn btn-primary step1" ng-show="IsStep1" ng-click="fnNextStep();" ng-disabled="myFormStep1.Email.$invalid || myFormStep1.Password.$invalid || myFormStep1.URL.$invalid">NEXT</button>
+                                <button type="button" style="background-color:#9733ee;font-weight:bold;border:none;width:100px;" class="btn btn-primary step2" ng-show="IsStep2" ng-click="fnActivate();" ng-disabled="myFormStep2.ApproveCode.$invalid">ACTIVATE</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="loader"></div>
+            </div>
+        </div>
+
+        <hr />
+        <footer>
+            <p style="margin-left:20px"><strong>&copy; @DateTime.Now.Year.ToString() <a href="http://www.newstead.com.sg/" target="_blank">Newstead Technologies Pte. Ltd.</a></strong> All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
+<script>
+    function ShowModalActive() {
+        $('#activateModalStep1').modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+        setTimeout(function () {
+            $('#myFormStep1').trigger("reset");
+        }, 500);
+    }
+
+    function format(state) {
+        if (!state.id) return state.text; // optgroup
+        return state.text;
+    }
+
+    $(document).ready(function () {
+        $("#myLocation").select2({
+            placeholder: "Select Location",
+            formatResult: format,
+            formatSelection: format,
+            escapeMarkup: function (m) {
+                return m;
+            },
+        });
+        setTimeout(function () {
+            $('#myFormStep1').trigger("reset");
+        }, 500);
+    });
+</script>

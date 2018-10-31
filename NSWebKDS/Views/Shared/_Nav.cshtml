@@ -1,0 +1,54 @@
+﻿
+
+
+<nav class="navs" ng-controller="navCtrl">
+    <div class="nav-logo" style="cursor:pointer">
+        <img src="~/Content/fonts/Image/LOGO.png" width="70" height="70" ng-click="removeCookie('ListFloorID')" />
+    </div>
+    <div class="navbar-menu">
+        <ul class="navbar-left">
+            <li class="">
+                <p class="nav-link">Order Management</p>
+            </li>
+        </ul>
+        <ul class="navbar-right">
+            <li>
+                <div class="text-center">
+                    <a href="#" ng-click="gird(0)">
+                        <img class="choosegrid" src="~/Content/fonts/Image/list70.png" width="30" />
+                        <p class="choosegrid">List</p>
+                        <img class="chooselist" style="display:none" src="~/Content/fonts/Image/listBlu120.png" width="30" />
+                        <p class="chooselist" style="display:none; color: #0054E8">List</p>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div class="text-center">
+                    <a href="#" ng-click="gird(1)">                    
+                        <img class="chooselist" src="~/Content/fonts/Image/menugrid70.png" width="30" />
+                        <p class="chooselist">Grid</p>
+                        <img class="choosegrid" style="display:none" src="~/Content/fonts/Image/gridBlu120.png" width="30" />
+                        <p class="choosegrid" style="display:none; color: #0054E8">Grid</p>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div class="text-center">
+                    <a href="#" onclick="ShowModalActive();">
+                        <img src="~/Content/fonts/Image/active.png" />
+                        <p>Active</p>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div class="text-center">
+                    <a id="filter" href="#" class="text-center" onclick="filter()">
+                        <img src="~/Content/fonts/Image/filter.png" />
+                        <p>Filter</p>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+

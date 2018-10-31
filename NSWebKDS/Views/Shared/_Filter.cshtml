@@ -1,0 +1,131 @@
+﻿<link href="~/Content/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<style>
+    .remove-icons:before {
+        content: '\00d7';
+    }
+</style>
+<div id="item" class="divchil1 over-right left transition" ng-controller="filterCtrl">
+    <div class=" d-flex justify-content-center" >
+        <div class="col-lg-11">
+            <div class="col-lg-12">
+                <span class="ft-remove" onclick="filter()">
+                    <i class="icon-remove remove-icons"></i>
+                </span>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-lg-12">
+                <img src="~/Content/fonts/Image/filter_purple.png" class="img-filter" />
+                <span class="filter text-uppercase">filter</span>
+                <span class="ft-clear" style="cursor:pointer" ng-click="fnClear()">Clear</span>
+            </div>
+            <div class="col-lg-12">
+                <div class="checkbox icheck-default gruop">
+                    <input type="checkbox"
+                           value="true"
+                           ng-model="checkGroup"
+                           id="checkGruop" checked/>
+                    <label for="checkGruop" style="line-height:1.4">&nbsp;GROUP BY ORDER NO.</label>
+                </div>
+                
+            </div>
+            <div class="col-lg-12">
+                <div class="dt"><div  id="zone" class="text-uppercase">zone <i class="icon-angle-down"></i> </div><hr /></div>
+                <div class="dd">
+                    <ul>                     
+                        <li ng-repeat="zone in zoneResponse">
+                            <div class="checkbox icheck-default zone">
+                                <input type="checkbox"
+                                       name="selectedZone[]"
+                                       value="{{zone.ID}}"
+                                       ng-model="zone.Selected"
+                                       id="{{zone.ID}}"/>
+                                <label for="{{zone.ID}}">&nbsp;{{zone.Name}}</label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="dt"><div id="table" class="text-uppercase">table  <i class="icon-angle-down"></i></div><hr /></div>
+                <div class="dd">
+                    <ul>
+                        <li ng-repeat="table in tableResponse">
+                            <div class="checkbox icheck-default table">
+                                <input type="checkbox"
+                                       name="selectedPrinter[]"
+                                       value="{{table.ID}}"
+                                       ng-model="table.Selected"
+                                       id="{{table.ID}}" />
+                                <label for="{{table.ID}}">&nbsp;{{table.Name}}</label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="dt"><div id="printer" class="text-uppercase">printer  <i class="icon-angle-down"></i></div> <hr /></div>
+                <div class="dd">
+                    <ul>                  
+                        <li ng-repeat="printer in printerResponse">
+                            <div class="checkbox icheck-default printer">
+                                <input type="checkbox"
+                                       name="selectedTable[]"
+                                       value="{{printer.ID}}"
+                                       ng-model="printer.Selected"
+                                       id="{{printer.ID}}" /> 
+                                <label for="{{printer.ID}}">&nbsp;{{printer.Name}}</label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="dt"><div id="type" class="text-uppercase">type  <i class="icon-angle-down"></i></div><hr /></div>
+                <div class="dd">
+                    <ul>
+                        <li ng-repeat="type in typeResponse"> 
+                            <div class="checkbox icheck-default">
+                                <input type="checkbox"
+                                       name="selectedTable[]"
+                                       value="{{type.ID}}"
+                                       ng-model="type.Selected" 
+                                       id="{{type.ID}}"/>
+                                <label for="{{type.ID}}">  &nbsp;{{type.Name}}</label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div style="height:80px; overflow-y:auto"></div>
+            </div>
+        </div>
+    </div>
+    <div class="btn-done text-uppercase" ng-click="fnDone()"> done
+    </div>
+
+</div>
+<script>
+
+    $(document).ready(function () {
+        var height = $(window).height()
+        $(".divchil1").css({ 'height': height + 'px' });
+        $(".bodyContent").css({ 'min-height': height-148 + 'px' });
+        $(".dd").css({ 'max-height': height - 505 + 'px' });
+        $('div[class="dd"]').hide();
+        $('div[class="dt"] div').click(function () {
+            if ($(this).find('i').hasClass('icon-angle-up')) {
+                $('div[class="dd"]:visible').slideUp('slow');
+                $(this).find('i[class="icon-angle-up"]').removeClass('icon-angle-up').addClass('icon-angle-down');
+            } else {
+                $('div[class="dd"]:visible').slideUp('slow');
+                $('i[class="icon-angle-up"]:visible').removeClass('icon-angle-up').addClass('icon-angle-down');
+                $(this).find('i[class="icon-angle-down"]').removeClass('icon-angle-down').addClass('icon-angle-up');
+                $(this).parent().next().slideDown('slow');
+
+            }
+            return false;
+        });
+    });
+    $(window).resize(function () {
+        var height = $(window).height()
+        $(".divchil1").css({ 'height': height + 'px' });
+        $(".bodyContent").css({ 'min-height': height - 148 + 'px' });
+        $(".dd").css({ 'max-height': height - 505 + 'px' });
+    })
+</script>

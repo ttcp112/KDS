@@ -1,0 +1,199 @@
+﻿@{
+    ViewBag.Title = "Order Management";
+}
+<div id="divListOrder" class="animate-bottom" style="width:100%; padding:0; display:none;" ng-controller="ordermanagementCtrl">
+    <div class="bodyContent">
+        <div id="List" >
+            @*Header*@
+            <div class="row header text-uppercase height-50 font-weight-bold col-lg-12" style="padding-top:0px; position:fixed; top:104px; z-index:9998; background-color:#fff; margin-right:0px; margin-left:0px;">
+                <div class="col-lg-1 col-md-1"></div>
+                <div class="col col-lg-1 text-center col-md-1" style="padding:0">
+                    Time
+                </div>
+                <div class="col col-lg-2 text-center col-md-2">
+                    Qty
+                </div>
+                <div class="col col-lg-8 col-md-8">
+                    Dishes
+                </div>
+            </div>
+
+            @*ListOrder*@
+            <div class="row" style="margin-top:170px; width:100%;"> </div>
+            <div class="row" ng-repeat="order in orderResponse track by order.IdOrderNo" id="{{order.IdOrderNo}}" emit-last-repeater-element-order style="margin-right:0px; margin-left:0px;">
+
+                @*/row - Order*@
+                <div class="row height-40 bg-order-table font-weight-bold col-lg-12"
+                     id="_{{order.IdOrderNo}}" name="{{order.DeliveryTime}}" style="margin-right:0px; margin-left:0px; width:100%;">
+                    <div class="col col-lg-12">
+                        {{order.OrderNo}}
+                    </div>
+                </div>
+
+                @*/row - Item*@
+                <div class="row height-50 bg-dish col-lg-12 rowTimer itemTag"
+                     ng-repeat="item in order.ListItem"
+                     id="{{item.ID}}"
+                     data-time="{{item.DataTime}}"                   
+                     data-orderno="{{order.IdOrderNo}}"
+                     style="background-color: {{item.bgColor}}; color: {{item.Color}}; margin-right:0px; margin-left:0px;">
+                    <div class="col col-lg-1 text-right col-md-1">
+                        <img src="~/Content/fonts/Image/notice.png" ng-if="item.IsDel == true" width="25" class="content-center" />
+                    </div>
+                    <div class="col col-lg-1 col-md-1">
+                        <span class="content-center">{{item.Time}}</span>
+                    </div>
+                    <div class="col col-lg-2 col-md-2 text-center">
+                        <span class="content-center">{{item.Qty}}</span>
+                    </div>
+                    <div class="col col-lg-5 col-md-4">
+                        <span ng-bind-html="renderHtml(item.Name)"></span>
+                    </div>
+                    <div class="col col-lg-1 col-md-1 text-right">
+                        <img src="~/Content/fonts/Image/takeaway.png" ng-if="item.IsTA == true" width="70" class="content-center" />
+                    </div>
+                    <div class="col col-lg-2 col-md-3 text-uppercase" ng-class="item.IsDel == true ? '' : 'pending'">
+                        <span class="content-center">
+                            Pending
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="Gird">
+            <div id="parenGrid">
+                <div class="gird" ng-repeat="gird in listGird track by $index" emit-last-repeater-element-order-grid>
+                    <div id="item_{{item.IdOrderNo}}" class="gridTime item"
+                         ng-repeat="item in gird track by $index"
+                         data-lapseTime="{{item.LapseTime}}"
+                         data-orderno="{{item.IdOrderNo}}">
+                        <div id="_gird_{{item.IdOrderNo}}" class="col-md-12 head-gird bg-order-gird"  name="{{item.DeliveryTime}}">
+                            <div style="height:40px;padding:0 15px">
+                                <div class="left-50">
+                                    Tag: <span>{{item.TagNumber}}</span>
+                                </div>
+                                <div class="left-50">
+                                    Order No: <span>{{item.IdOrderNo.substr(-3)}} </span>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div style="height:35px; padding:0 15px">
+                                <div class="left-50">
+                                    Order Time: <span>{{item.OrderTime}}</span>
+                                </div>
+                                <div class="left-50">
+                                    Time Lapse: <span id="_timeSlap_{{item.IdOrderNo}}" style="min-width:115px">00:00:00
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="col-md-12 head-item bg-head bg-head_{{item.IdOrderNo}}" >
+                            <div class="fleft" style="width:20%;">Qty</div>
+                            <div class="fleft" style="width:20%;">Item</div>
+                            <div class="fleft" style="width:60%;">
+                                <div ng-if="item.DeliveryType == -1" style="float:right">
+                                    <div ng-if="item.IsTA == true">
+                                        <img src="~/Content/fonts/Image/takeaway120.png" width="35" class="content-center" />
+                                        <span class="text-uppercase" style="color:#9e27ba">take away</span>
+                                    </div>
+                                    <div ng-if="item.IsTA == false">
+                                        <img src="~/Content/fonts/Image/eatin120.png" width="35" class="content-center" />
+                                        <span class="text-uppercase" style="color:#1d9325">eat in</span>
+                                    </div>
+                                </div>                                
+                                <div ng-if="item.DeliveryType == 1" style="float:right">
+                                    <img src="~/Content/fonts/Image/Deli120.png" width="35" class="content-center" />
+                                    <span class="text-uppercase" style="color:#ec008c">deliver at: {{item.DeliveryTime}}</span>
+                                </div>
+                                <div ng-if="item.DeliveryType == 2" style="float:right">
+                                    <img src="~/Content/fonts/Image/pickup120.png" width="35" class="content-center" />
+                                    <span class="text-uppercase" style="color:#f7941e">Pickup at: {{item.DeliveryTime}}</span>
+                                </div>                              
+                            </div>
+                        </div>
+                        <div class="clearfix bg-head"></div>
+                        <div id="item_grid_{{item.IdOrderNo}}" class="list-item-grid ">
+                            <div class="col-md-12" ng-repeat="oder in item.ListItem" style="background-color: {{oder.bgColor}}; color: {{oder.Color}}; margin-top:1px;  font-family: 'SF Text';">
+                                <div class="fleft" style="width:20%; ">{{oder.Qty}}</div>
+                                <div class="fleft" style="width:65%;">
+                                    <div ng-if="oder.Set==''">
+                                        {{oder.GName}}
+                                        <ul style="margin-left:25px;">
+                                            <li style="list-style-type: disc;" ng-repeat="d in oder.ListItem track by $index"><span> {{d}}</span></li>
+                                        </ul>
+                                    </div>
+
+                                    <div ng-if="oder.Set!=''">
+                                        {{oder.Set}}
+                                        <ul style="margin-left:25px;">
+                                            <li style="list-style-type: disc;">
+                                                <span>  {{oder.GName}} </span>
+                                                <ul style="margin-left:25px;">
+                                                    <li style="list-style-type: circle;" ng-repeat="d in oder.ListItem track by $index"><span> {{d}}</span></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="fleft" style="width:10%">
+                                    <img src="~/Content/fonts/Image/takeaway.png" ng-if="oder.IsTA == true" width="25" class="content-center" />
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>                           
+                    </div>
+                </div>         
+            </div>           
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var scope = angular.element(document.getElementById('divListOrder')).scope();
+        setInterval(function () {       
+            scope.countTime();
+        }, 1000);
+        setInterval(function () {
+            scope.changeColor();
+        }, 10000);
+    });
+    function filter() {
+        $("#item").toggleClass('over-right');
+    }
+    $('.navs').mousedown(function (event) {
+        if (!$("#item").hasClass('over-right')) {
+            filter();
+        }
+    });
+    $('.bodyContent').mousedown(function (event) {
+        if (!$("#item").hasClass('over-right')) {
+            filter();
+        }
+    });
+    //set width height for gird
+    var heightitem = _columnGird / 3;
+    var width = $(window).width();
+    var height = $(window).height();
+    $(".gird").css({ 'width': width - 5 + 'px', 'height': height - 163 + 'px' });
+    $(".item").css({ 'width': (width - 15) / 3 + 'px', 'height': (height - 172) / heightitem + (heightitem == 1 ? 2 : 0) + 'px' });
+    $(window).resize(function () {
+        //set width height for gird when resize screen
+        var width = $(window).width();
+        var height = $(window).height();
+        var countItem = this.document.getElementsByClassName("gird").length;
+        $("#parenGrid").css({ 'width': countItem * (width-4) + 'px', 'height': height - 158 + 'px'  });
+        $(".gird").css({ 'width': width - 5 + 'px', 'height': height - 163 + 'px' });
+        $(".item").css({ 'width': (width - 15) / 3 + 'px', 'height': (height - 172) / heightitem + (heightitem == 1 ? 2 : 0) + 'px' });
+        var $mvar = $('.gridTime');
+        for (i = 0; i < $mvar.length; i++) {
+            var _OrderNo = $mvar.eq(i).data("orderno");
+            // set height for div item (scroll)
+            var parentHeight = $('#item_' + _OrderNo).height();
+            var headHeight = $('#_gird_' + _OrderNo).height() + $('.bg-head_' + _OrderNo).height();
+            $("#item_grid_" + _OrderNo).css({ 'height': parentHeight - headHeight + 'px' });
+        }
+    });
+</script>

@@ -1,0 +1,76 @@
+﻿input, select {
+    max-width: 100% !important;
+}
+
+.select2-selection--single, .select2-container--default .select2-selection--multiple {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    min-height: 60px;
+    font-family: SF Text Semibold;
+    font-size: 24pt;
+    color: #B3B3B3 !important;
+}
+
+    .select2-selection--single .select2-selection__rendered {
+        color: #73879C;
+        padding-top: 5px;
+        color: #B3B3B3 !important;
+    }
+
+.select2-selection--multiple .select2-selection__rendered {
+    padding-top: 3px;
+    color: #B3B3B3 !important;
+}
+
+.select2-selection--single .select2-selection__arrow {
+    height: 36px;
+    color: #B3B3B3 !important;
+}
+
+.select2-selection--multiple .select2-selection__choice, .select2-container--default .select2-selection--multiple .select2-selection__clear {
+    margin-top: 2px;
+    border: none;
+    border-radius: 0;
+    padding: 3px 5px;
+    color: #B3B3B3 !important;
+}
+
+.select2-container--focus .select2-selection--multiple {
+    border: 1px solid #ccc;
+    color: #B3B3B3 !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 60px !important;
+    color: #B3B3B3 !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 47px !important;
+    color: #B3B3B3 !important;
+}
+
+.select2-search__field{
+    display:none;
+}
+
+#exampleModalLabel {
+    margin: auto;
+    text-align: center;
+    font-size: 50pt;
+    color: #636363;
+    border-bottom: 5px solid #9733ee;
+    font-family: SF Text Bold;
+}
+
+#select2-myLocation-container .divsmall {
+    display: none;
+}
+
+.select2-results__group {
+    color: #FFF;
+    background-color: #535353;
+    height: 50px;
+    line-height: 36px; 
+}
